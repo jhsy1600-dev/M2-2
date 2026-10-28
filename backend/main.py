@@ -1,14 +1,10 @@
 from fastapi import FastAPI, HTTPException
-<<<<<<< HEAD
 from fastapi.middleware.cors import CORSMiddleware
-=======
->>>>>>> d3c0cc00fb6d01f0b47487fc55999e26bba3e199
 from pydantic import BaseModel
 from typing import Optional
 from firebase_admin import firestore
 
 # Firestore 연결 객체 가져오기
-<<<<<<< HEAD
 from firebase_db import db
 
 # Gemini 호출 함수 가져오기
@@ -38,13 +34,6 @@ app.add_middleware(
 # =========================
 # Firestore 컬렉션 이름
 # =========================
-=======
-from .firebase_db import db
-
-app = FastAPI(title="학습시간 데이터 기반 AI 비서 API")
-
-# Firestore 컬렉션 이름
->>>>>>> d3c0cc00fb6d01f0b47487fc55999e26bba3e199
 COLLECTION_NAME = "study_records"
 CONVERSATION_COLLECTION = "conversations"
 
@@ -52,11 +41,6 @@ CONVERSATION_COLLECTION = "conversations"
 # =========================
 # 요청 모델
 # =========================
-<<<<<<< HEAD
-=======
-
-# 학습 데이터 추가 요청 모델
->>>>>>> d3c0cc00fb6d01f0b47487fc55999e26bba3e199
 class DataCreate(BaseModel):
     date: str
     subject: str
@@ -64,10 +48,6 @@ class DataCreate(BaseModel):
     memo: Optional[str] = None
 
 
-<<<<<<< HEAD
-=======
-# 학습 데이터 수정 요청 모델
->>>>>>> d3c0cc00fb6d01f0b47487fc55999e26bba3e199
 class DataUpdate(BaseModel):
     date: Optional[str] = None
     subject: Optional[str] = None
@@ -75,7 +55,6 @@ class DataUpdate(BaseModel):
     memo: Optional[str] = None
 
 
-<<<<<<< HEAD
 class ConversationCreate(BaseModel):
     user_message: str
     ai_message: Optional[str] = None
@@ -84,12 +63,6 @@ class ConversationCreate(BaseModel):
 
 class AIRequest(BaseModel):
     message: str = "내 학습 데이터를 분석해줘."
-=======
-# 대화 기록 추가 요청 모델
-class ConversationCreate(BaseModel):
-    user_message: str
-    ai_message: Optional[str] = None
->>>>>>> d3c0cc00fb6d01f0b47487fc55999e26bba3e199
 
 
 # =========================
@@ -116,7 +89,6 @@ def serialize_record(data: dict):
     return result
 
 
-<<<<<<< HEAD
 # 숫자 변환 보조 함수
 def to_int(value, default=0):
     try:
@@ -177,110 +149,17 @@ def save_conversation(user_message: str, ai_message: str, summary: Optional[dict
             }
         ],
         "summary": summary or {},
-=======
-# =========================
-# 기본 API
-# =========================
-
-@app.get("/")
-def home():
-    return {
-        "message": "학습시간 데이터 기반 AI 비서 API입니다.",
-        "docs": "/docs"
-    }
-
-
-# Firestore 연결 테스트 API
-@app.get("/api/firestore-test")
-def firestore_test():
-    doc_ref = db.collection("test").document("connection")
-
-    doc_ref.set({
-        "message": "Firestore 연결 성공!"
-    })
-
-    doc = doc_ref.get()
-
-    return {
-        "success": True,
-        "data": doc.to_dict()
-    }
-
-
-# =========================
-# 학습 데이터 API
-# =========================
-
-# 1. 데이터 추가
-@app.post("/api/data")
-def create_data(data: DataCreate):
-    new_data = model_to_dict(data)
-
-    # Firestore 문서 자동 ID 생성
-    doc_ref = db.collection(COLLECTION_NAME).document()
-
-    save_data = {
-        **new_data,
->>>>>>> d3c0cc00fb6d01f0b47487fc55999e26bba3e199
         "created_at": firestore.SERVER_TIMESTAMP,
         "updated_at": firestore.SERVER_TIMESTAMP
     }
 
     doc_ref.set(save_data)
 
-<<<<<<< HEAD
     return doc_ref.id
 
 
 # 학습 데이터 요약 계산 함수
 def calculate_summary(records: list):
-=======
-    # 저장된 데이터 다시 읽기
-    saved_doc = doc_ref.get()
-    saved_data = saved_doc.to_dict()
-    saved_data["id"] = doc_ref.id
-
-    return {
-        "message": "데이터가 Firestore에 추가되었습니다.",
-        "data": serialize_record(saved_data)
-    }
-
-
-# 2. 데이터 목록 조회
-@app.get("/api/data")
-def get_data():
-    docs = db.collection(COLLECTION_NAME).stream()
-
-    records = []
-
-    for doc in docs:
-        data = doc.to_dict()
-        data["id"] = doc.id
-        records.append(serialize_record(data))
-
-    # 날짜 기준 정렬
-    records = sorted(records, key=lambda x: x.get("date", ""))
-
-    return {
-        "count": len(records),
-        "data": records
-    }
-
-
-# 3. 데이터 요약
-# 중요: /api/data/{data_id} 보다 위에 있어야 함
-@app.get("/api/data/summary")
-def get_data_summary():
-    docs = db.collection(COLLECTION_NAME).stream()
-
-    records = []
-
-    for doc in docs:
-        data = doc.to_dict()
-        data["id"] = doc.id
-        records.append(data)
-
->>>>>>> d3c0cc00fb6d01f0b47487fc55999e26bba3e199
     if len(records) == 0:
         return {
             "period": None,
@@ -295,26 +174,17 @@ def get_data_summary():
             "subject_summary": {}
         }
 
-<<<<<<< HEAD
-=======
-    # 날짜 기준 정렬
->>>>>>> d3c0cc00fb6d01f0b47487fc55999e26bba3e199
     sorted_records = sorted(records, key=lambda x: x.get("date", ""))
 
     dates = [record.get("date", "") for record in sorted_records]
 
     values = [
-<<<<<<< HEAD
         to_int(record.get("minutes", 0), 0)
-=======
-        record.get("minutes", 0)
->>>>>>> d3c0cc00fb6d01f0b47487fc55999e26bba3e199
         for record in sorted_records
     ]
 
     total = sum(values)
     count = len(values)
-<<<<<<< HEAD
     average = round(total / count, 2) if count > 0 else 0
     max_value = max(values) if values else 0
     min_value = min(values) if values else 0
@@ -326,30 +196,12 @@ def get_data_summary():
     for record in sorted_records:
         subject = record.get("subject") or "기타"
         minutes = to_int(record.get("minutes", 0), 0)
-=======
-    average = round(total / count, 2)
-    max_value = max(values)
-    min_value = min(values)
-
-    period = f"{dates[0]} ~ {dates[-1]}"
-
-    # 과목별 합계
-    subject_summary = {}
-
-    for record in sorted_records:
-        subject = record.get("subject", "기타")
-        minutes = record.get("minutes", 0)
->>>>>>> d3c0cc00fb6d01f0b47487fc55999e26bba3e199
 
         if subject not in subject_summary:
             subject_summary[subject] = 0
 
         subject_summary[subject] += minutes
 
-<<<<<<< HEAD
-=======
-    # 간단한 최근 추세 분석
->>>>>>> d3c0cc00fb6d01f0b47487fc55999e26bba3e199
     if count >= 6:
         first_avg = sum(values[:3]) / 3
         last_avg = sum(values[-3:]) / 3
@@ -377,7 +229,6 @@ def get_data_summary():
     }
 
 
-<<<<<<< HEAD
 # AI 분석 공통 함수
 def make_ai_analysis(request: AIRequest):
     docs = db.collection(COLLECTION_NAME).stream()
@@ -499,7 +350,6 @@ def firestore_test():
 # =========================
 # Gemini AI API
 # =========================
-
 @app.post("/api/ai/test")
 def test_gemini(request: AIRequest):
     try:
@@ -532,7 +382,6 @@ def chat(request: AIRequest = AIRequest()):
 # =========================
 # 학습 데이터 API
 # =========================
-
 @app.post("/api/data")
 def create_data(data: DataCreate):
     new_data = model_to_dict(data)
@@ -576,6 +425,7 @@ def get_data():
     }
 
 
+# 중요: /api/data/{data_id} 보다 위에 있어야 함
 @app.get("/api/data/summary")
 def get_data_summary():
     docs = db.collection(COLLECTION_NAME).stream()
@@ -590,9 +440,6 @@ def get_data_summary():
     return calculate_summary(records)
 
 
-=======
-# 4. 특정 데이터 1개 조회
->>>>>>> d3c0cc00fb6d01f0b47487fc55999e26bba3e199
 @app.get("/api/data/{data_id}")
 def get_data_detail(data_id: str):
     doc_ref = db.collection(COLLECTION_NAME).document(data_id)
@@ -607,25 +454,15 @@ def get_data_detail(data_id: str):
     return serialize_record(data)
 
 
-<<<<<<< HEAD
 @app.put("/api/data/{data_id}")
 def update_data(data_id: str, payload: DataUpdate):
-=======
-# 5. 데이터 수정
-@app.put("/api/data/{data_id}")
-def update_data(data_id: str, update_data: DataUpdate):
->>>>>>> d3c0cc00fb6d01f0b47487fc55999e26bba3e199
     doc_ref = db.collection(COLLECTION_NAME).document(data_id)
     doc = doc_ref.get()
 
     if not doc.exists:
         raise HTTPException(status_code=404, detail="해당 데이터를 찾을 수 없습니다.")
 
-<<<<<<< HEAD
     update_dict = model_to_dict(payload, exclude_unset=True)
-=======
-    update_dict = model_to_dict(update_data, exclude_unset=True)
->>>>>>> d3c0cc00fb6d01f0b47487fc55999e26bba3e199
 
     if len(update_dict) == 0:
         raise HTTPException(status_code=400, detail="수정할 데이터가 없습니다.")
@@ -644,10 +481,6 @@ def update_data(data_id: str, update_data: DataUpdate):
     }
 
 
-<<<<<<< HEAD
-=======
-# 6. 데이터 삭제
->>>>>>> d3c0cc00fb6d01f0b47487fc55999e26bba3e199
 @app.delete("/api/data/{data_id}")
 def delete_data(data_id: str):
     doc_ref = db.collection(COLLECTION_NAME).document(data_id)
@@ -670,16 +503,10 @@ def delete_data(data_id: str):
 # =========================
 # 대화 기록 API
 # =========================
-
-<<<<<<< HEAD
-=======
-# 1. 대화 기록 추가
->>>>>>> d3c0cc00fb6d01f0b47487fc55999e26bba3e199
 @app.post("/api/conversations")
 def create_conversation(conversation: ConversationCreate):
     new_conversation = model_to_dict(conversation)
 
-<<<<<<< HEAD
     user_text = new_conversation.get("user_message", "")
 
     ai_text = (
@@ -704,12 +531,6 @@ def create_conversation(conversation: ConversationCreate):
                 "content": ai_text
             }
         ],
-=======
-    doc_ref = db.collection(CONVERSATION_COLLECTION).document()
-
-    save_data = {
-        **new_conversation,
->>>>>>> d3c0cc00fb6d01f0b47487fc55999e26bba3e199
         "created_at": firestore.SERVER_TIMESTAMP,
         "updated_at": firestore.SERVER_TIMESTAMP
     }
@@ -719,10 +540,7 @@ def create_conversation(conversation: ConversationCreate):
     saved_doc = doc_ref.get()
     saved_data = saved_doc.to_dict()
     saved_data["id"] = saved_doc.id
-<<<<<<< HEAD
     saved_data = normalize_conversation_data(saved_data)
-=======
->>>>>>> d3c0cc00fb6d01f0b47487fc55999e26bba3e199
 
     return {
         "message": "대화 기록이 Firestore에 저장되었습니다.",
@@ -730,10 +548,6 @@ def create_conversation(conversation: ConversationCreate):
     }
 
 
-<<<<<<< HEAD
-=======
-# 2. 대화 기록 전체 조회
->>>>>>> d3c0cc00fb6d01f0b47487fc55999e26bba3e199
 @app.get("/api/conversations")
 def get_conversations():
     docs = db.collection(CONVERSATION_COLLECTION).stream()
@@ -743,15 +557,9 @@ def get_conversations():
     for doc in docs:
         data = doc.to_dict()
         data["id"] = doc.id
-<<<<<<< HEAD
         data = normalize_conversation_data(data)
         conversations.append(serialize_record(data))
 
-=======
-        conversations.append(serialize_record(data))
-
-    # 최근 대화가 위로 오도록 정렬
->>>>>>> d3c0cc00fb6d01f0b47487fc55999e26bba3e199
     conversations = sorted(
         conversations,
         key=lambda x: x.get("created_at", ""),
@@ -761,33 +569,6 @@ def get_conversations():
     return {
         "count": len(conversations),
         "data": conversations
-    }
-
-<<<<<<< HEAD
-=======
-
-# 3. 특정 대화 기록 삭제
->>>>>>> d3c0cc00fb6d01f0b47487fc55999e26bba3e199
-@app.delete("/api/conversations/{conversation_id}")
-def delete_conversation(conversation_id: str):
-    doc_ref = db.collection(CONVERSATION_COLLECTION).document(conversation_id)
-    doc = doc_ref.get()
-
-    if not doc.exists:
-        raise HTTPException(status_code=404, detail="해당 대화 기록을 찾을 수 없습니다.")
-
-<<<<<<< HEAD
-=======
-    deleted_data = doc.to_dict()
-    deleted_data["id"] = doc.id
-
->>>>>>> d3c0cc00fb6d01f0b47487fc55999e26bba3e199
-    doc_ref.delete()
-
-    return {
-        "message": "대화 기록이 삭제되었습니다.",
-<<<<<<< HEAD
-        "id": conversation_id
     }
 
 
@@ -802,12 +583,30 @@ def get_conversation_detail(conversation_id: str):
     data = doc.to_dict()
     data["id"] = doc.id
     data = normalize_conversation_data(data)
-=======
+
+    return serialize_record(data)
+
+
+@app.delete("/api/conversations/{conversation_id}")
+def delete_conversation(conversation_id: str):
+    doc_ref = db.collection(CONVERSATION_COLLECTION).document(conversation_id)
+    doc = doc_ref.get()
+
+    if not doc.exists:
+        raise HTTPException(status_code=404, detail="해당 대화 기록을 찾을 수 없습니다.")
+
+    deleted_data = doc.to_dict()
+    deleted_data["id"] = doc.id
+    deleted_data = normalize_conversation_data(deleted_data)
+
+    doc_ref.delete()
+
+    return {
+        "message": "대화 기록이 삭제되었습니다.",
         "deleted_data": serialize_record(deleted_data)
     }
 
 
-# 4. 전체 대화 기록 삭제
 @app.delete("/api/conversations")
 def delete_all_conversations():
     docs = db.collection(CONVERSATION_COLLECTION).stream()
@@ -822,4 +621,3 @@ def delete_all_conversations():
         "message": "전체 대화 기록이 삭제되었습니다.",
         "deleted_count": deleted_count
     }
->>>>>>> d3c0cc00fb6d01f0b47487fc55999e26bba3e199
