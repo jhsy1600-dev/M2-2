@@ -10,6 +10,7 @@ venv/
 .env
 
 # Firebase / Google service account keys
+<<<<<<< HEAD
 serviceAccountKey.json
 firebase-adminsdk.json
 *serviceAccount*.json
@@ -23,3 +24,9 @@ dist/
 
 # OS
 .DS_Store
+=======
+*.json
+
+# IDE
+.vscode/
+>>>>>>> d3c0cc00fb6d01f0b47487fc55999e26bba3e199
