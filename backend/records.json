@@ -1,0 +1,37 @@
+[
+  {
+    "date": "2026-10-07",
+    "subject": "영어",
+    "minutes": 60,
+    "memo": null,
+    "id": 1
+  },
+  {
+    "date": "2026-10-07",
+    "subject": "수학",
+    "minutes": 90,
+    "memo": null,
+    "id": 2
+  },
+  {
+    "date": "2026-10-07",
+    "subject": "과학",
+    "minutes": 50,
+    "memo": null,
+    "id": 3
+  },
+  {
+    "date": "2026-10-07",
+    "subject": "국어",
+    "minutes": 120,
+    "memo": null,
+    "id": 4
+  },
+  {
+    "date": "2026-10-08",
+    "subject": "영어",
+    "minutes": 80,
+    "memo": "단어 암기 + 복습",
+    "id": 5
+  }
+]

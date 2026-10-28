@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environments
+venv/
+.venv/
+
+# Environment variables
+.env
+
+# Firebase / Google service account keys
+serviceAccountKey.json
+firebase-adminsdk.json
+*serviceAccount*.json
+
+# Node
+node_modules/
+dist/
+
+# IDE
+.vscode/
+
+# OS
+.DS_Store

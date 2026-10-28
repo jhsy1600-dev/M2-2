@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>학습시간 AI 비서</title>
+
+    <!-- CSS 연결 -->
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>학습시간 AI 비서</h1>
+
+      <!-- 데이터 요약 -->
+      <section class="card">
+        <h2>데이터 요약</h2>
+        <button id="load-summary-btn">요약 불러오기</button>
+        <pre id="summary-box">요약 정보가 여기에 표시됩니다.</pre>
+      </section>
+
+      <!-- AI 채팅 -->
+      <section class="card">
+        <h2>AI 채팅</h2>
+
+        <div id="chat-box" class="chat-box"></div>
+
+        <form id="chat-form">
+          <textarea
+            id="chat-input"
+            placeholder="학습 데이터에 대해 질문하세요"
+          ></textarea>
+          <button id="chat-submit-btn" type="submit">전송</button>
+        </form>
+
+        <p id="chat-loading" class="loading hidden">
+          AI가 답변을 생성 중입니다...
+        </p>
+      </section>
+
+      <!-- 데이터 관리 -->
+      <section class="card">
+        <h2>데이터 관리</h2>
+
+        <form id="data-form">
+          <input id="date-input" type="date" required />
+          <input
+            id="value-input"
+            type="number"
+            placeholder="학습 시간"
+            required
+          />
+          <input id="memo-input" type="text" placeholder="메모" />
+          <button type="submit">데이터 추가</button>
+        </form>
+
+        <button id="load-data-btn">데이터 목록 불러오기</button>
+        <ul id="data-list"></ul>
+      </section>
+
+      <!-- 대화 기록 -->
+      <section class="card">
+        <h2>대화 기록</h2>
+        <button id="load-conversations-btn">대화 목록 불러오기</button>
+        <ul id="conversation-list"></ul>
+      </section>
+    </div>
+
+    <!-- JS 연결 -->
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

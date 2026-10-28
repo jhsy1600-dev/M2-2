@@ -1,0 +1,104 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f5f6fa;
+  color: #222;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.chat-box {
+  height: 320px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  padding: 12px;
+  border-radius: 8px;
+  background: #fafafa;
+  margin-bottom: 12px;
+}
+
+.message {
+  margin-bottom: 12px;
+  padding: 10px;
+  border-radius: 8px;
+  white-space: pre-wrap;
+  line-height: 1.5;
+}
+
+.user {
+  background: #dbeafe;
+  text-align: right;
+}
+
+.ai {
+  background: #e5e7eb;
+}
+
+textarea {
+  width: 100%;
+  height: 80px;
+  padding: 10px;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+input {
+  padding: 8px;
+  margin-right: 6px;
+  margin-bottom: 8px;
+}
+
+button {
+  padding: 8px 12px;
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  background: #2563eb;
+  color: white;
+}
+
+button:hover {
+  background: #1d4ed8;
+}
+
+button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.loading {
+  color: #2563eb;
+  font-weight: bold;
+}
+
+.hidden {
+  display: none;
+}
+
+li {
+  margin-bottom: 8px;
+}
+
+pre {
+  white-space: pre-wrap;
+  background: #f3f4f6;
+  padding: 12px;
+  border-radius: 8px;
+}
